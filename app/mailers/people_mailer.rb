@@ -5,9 +5,9 @@ class PeopleMailer < ApplicationMailer
   #
   #   en.people_mailer.send_summary.subject
   #
-  def send_summary
+  def send_summary(person)
     @greeting = "Buenas buenas!!"
-
-    mail to: "jcflorezv@unal.edu.co"
+    @person = person
+    mail to: @person.email
   end
 end
