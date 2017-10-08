@@ -3,9 +3,8 @@ class PeopleController < ApplicationController
   before_action :set_person, only: [:show, :edit, :update, :destroy]
   
   def ackermann
-    load('Device.rb')
-    @answer = Device.ackermann(3, 10)
-    puts(@answer)
+    load('lib/Device.rb')
+    @answer = Device.delay(queue: 'exp_calculation').ackermann(3, 10)
   end
 
   # GET /people
@@ -37,7 +36,7 @@ class PeopleController < ApplicationController
       if @person.save
         format.html { redirect_to @person, notice: 'Person was successfully created.' }
         format.json { render :show, status: :created, location: @person }
-        PeopleMailer.delay(:run_at => 5.seconds.from_now, :queue => 'mon_file').send_summary()
+        PeopleMailer.delay(:run_at => 5.seconds.from_now, :queue => 'emails').send_summary()
       else
         format.html { render :new }
         format.json { render json: @person.errors, status: :unprocessable_entity }
