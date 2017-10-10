@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount Delayed::Web::Engine, at: '/jobs'
   root to: 'people#index'
   get 'ack', to: 'people#ackermann'
   resources :people
